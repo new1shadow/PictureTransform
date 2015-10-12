@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define DEBUG
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -28,11 +30,16 @@ namespace PicProgram
             //textBox1.Text += Matrix.Zero.ToStringWithMatlab();
             Bitmap image;
             Bitmap ansimage;
+            DebugLogger.LogTimeStamp();
             while (!JPGEncoder.OpenFile(out image)) if(image != null)   image.Dispose();
             Pictransformer pictran = new Pictransformer();
             pictran.start(image);
-            pictran.stretchpicture(2, 2, Pictransformer.Stretching.Bicubic,out ansimage);
-            while (!JPGEncoder.SaveFile(ansimage)) ;
+            DebugLogger.LogTimeStamp();
+            pictran.stretchpicture(2, 2, Pictransformer.Stretching.Bilinear,out ansimage);
+            DebugLogger.LogTimeStamp();
+            //DebugLogger.LogLine("TEST");
+            JPGEncoder.SaveFile(ansimage);
+            DebugLogger.LogTimeStamp();
             Close();
         }
     }

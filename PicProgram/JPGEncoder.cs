@@ -14,6 +14,7 @@ using System.Drawing.Imaging;
 using System.Drawing;
 using System.Data;
 using System.Windows.Forms;
+using System.IO;
 
 namespace PicProgram
 {
@@ -50,6 +51,9 @@ namespace PicProgram
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string fileName = saveFileDialog.FileName;
+                string filePath = Path.GetDirectoryName(fileName);
+                filePath += "\\log.txt";
+                DebugLogger.SaveFile(filePath);
                 image.Save(fileName, ImageFormat.Jpeg);
                 return true;
             }

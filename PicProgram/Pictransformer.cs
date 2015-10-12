@@ -123,24 +123,42 @@ namespace PicProgram
                             case Stretching.Bilinear:
                                 double u = orip.X - (double)MathWork.floor(orip.X);
                                 double v = orip.Y - (double)MathWork.floor(orip.Y);
-                                Matrix m1 = new Matrix(1, 2, new double[,] { { 1 - u, u } });
-                                Matrix m2r = new Matrix(2, 2, new double[,] { { (double)ExtraGetPixel(orixint, oriyint).R, 
-                                                                                (double)ExtraGetPixel(orixint, oriyint + 1).R }, 
-                                                                              { (double)ExtraGetPixel(orixint + 1, oriyint).R, 
-                                                                                (double)ExtraGetPixel(orixint + 1, oriyint + 1).R } });
-                                Matrix m2g = new Matrix(2, 2, new double[,] { { (double)ExtraGetPixel(orixint, oriyint).G, 
-                                                                                (double)ExtraGetPixel(orixint, oriyint + 1).G }, 
-                                                                              { (double)ExtraGetPixel(orixint + 1, oriyint).G, 
-                                                                                (double)ExtraGetPixel(orixint + 1, oriyint + 1).G } });
-                                Matrix m2b = new Matrix(2, 2, new double[,] { { (double)ExtraGetPixel(orixint, oriyint).B, 
-                                                                                (double)ExtraGetPixel(orixint, oriyint + 1).B }, 
-                                                                              { (double)ExtraGetPixel(orixint + 1, oriyint).B, 
-                                                                                (double)ExtraGetPixel(orixint + 1, oriyint + 1).B } });
-                                Matrix m3 = new Matrix(2, 1, new double[,] { { 1 - v }, { v } });
+                                //This kind of Matrix calculating seens to be very slow.
+                                //Changing it into faster type.
 
-                                int ansr = MathWork.upcolor(MathWork.round((m1 * m2r * m3).GetData(0, 0)));
-                                int ansg = MathWork.upcolor(MathWork.round((m1 * m2g * m3).GetData(0, 0)));
-                                int ansb = MathWork.upcolor(MathWork.round((m1 * m2b * m3).GetData(0, 0)));
+                                //Matrix m1 = new Matrix(1, 2, new double[,] { { 1 - u, u } });
+                                //Matrix m2r = new Matrix(2, 2, new double[,] { { (double)ExtraGetPixel(orixint, oriyint).R, 
+                                //                                                (double)ExtraGetPixel(orixint, oriyint + 1).R }, 
+                                //                                              { (double)ExtraGetPixel(orixint + 1, oriyint).R, 
+                                //                                                (double)ExtraGetPixel(orixint + 1, oriyint + 1).R } });
+                                //Matrix m2g = new Matrix(2, 2, new double[,] { { (double)ExtraGetPixel(orixint, oriyint).G, 
+                                //                                                (double)ExtraGetPixel(orixint, oriyint + 1).G }, 
+                                //                                              { (double)ExtraGetPixel(orixint + 1, oriyint).G, 
+                                //                                                (double)ExtraGetPixel(orixint + 1, oriyint + 1).G } });
+                                //Matrix m2b = new Matrix(2, 2, new double[,] { { (double)ExtraGetPixel(orixint, oriyint).B, 
+                                //                                                (double)ExtraGetPixel(orixint, oriyint + 1).B }, 
+                                //                                              { (double)ExtraGetPixel(orixint + 1, oriyint).B, 
+                                //                                                (double)ExtraGetPixel(orixint + 1, oriyint + 1).B } });
+                                //Matrix m3 = new Matrix(2, 1, new double[,] { { 1 - v }, { v } });
+
+                                //int ansr = MathWork.upcolor(MathWork.round((m1 * m2r * m3).GetData(0, 0)));
+                                //int ansg = MathWork.upcolor(MathWork.round((m1 * m2g * m3).GetData(0, 0)));
+                                //int ansb = MathWork.upcolor(MathWork.round((m1 * m2b * m3).GetData(0, 0)));
+
+                                int ansr = MathWork.upcolor(MathWork.round(
+                                    (1-v)*(    (1-u)*ExtraGetPixel(orixint, oriyint).R+    u*ExtraGetPixel(orixint + 1, oriyint).R)+
+                                        v*((1-u)*ExtraGetPixel(orixint, oriyint + 1).R+u*ExtraGetPixel(orixint + 1, oriyint + 1).R)));
+                                int ansg = MathWork.upcolor(MathWork.round(
+                                    (1-v)*(    (1-u)*ExtraGetPixel(orixint, oriyint).G+    u*ExtraGetPixel(orixint + 1, oriyint).G)+
+                                        v*((1-u)*ExtraGetPixel(orixint, oriyint + 1).G+u*ExtraGetPixel(orixint + 1, oriyint + 1).G)));
+                                int ansb = MathWork.upcolor(MathWork.round(
+                                    (1-v)*(    (1-u)*ExtraGetPixel(orixint, oriyint).B+    u*ExtraGetPixel(orixint + 1, oriyint).B)+
+                                        v*((1-u)*ExtraGetPixel(orixint, oriyint + 1).B+u*ExtraGetPixel(orixint + 1, oriyint + 1).B)));
+#if DEBUG
+                                if (j == 0 && i % 5 == 0)
+                                    DebugLogger.LogLine("Processing:"+"x:"+j+"y:"+i+"Timestamp:"+DebugLogger.GetTimeStamp());
+#endif
+                                        
                                 output.SetPixel(j, i, Color.FromArgb(ansr, ansg, ansb));
                                 break;
                             case Stretching.Bicubic:

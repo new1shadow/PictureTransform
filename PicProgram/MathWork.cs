@@ -258,6 +258,7 @@ namespace PicProgram
         {
             return (int)Math.Ceiling(num);
         }
+        //keep the data in 0~255
         public static int upcolor(int num)
         {
             return (num >= 0) ? ((num < 256) ? num :255) : 0;
