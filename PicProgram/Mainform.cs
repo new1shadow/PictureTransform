@@ -36,7 +36,7 @@ namespace PicProgram
             Pictransformer pictran = new Pictransformer();
             pictran.start(image);
             //DebugLogger.LogTimeStamp();
-            pictran.stretchpicture(2, 2, Pictransformer.Stretching.Bicubic,out ansimage);
+            pictran.stretchpicture(1.7, 2, Pictransformer.Stretching.Bilinear,out ansimage);
             //DebugLogger.LogTimeStamp();
             //DebugLogger.LogLine("TEST");
             //pictran.stop();
