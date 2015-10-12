@@ -51,9 +51,11 @@ namespace PicProgram
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string fileName = saveFileDialog.FileName;
+#if DEBUG
                 string filePath = Path.GetDirectoryName(fileName);
                 filePath += "\\log.txt";
                 DebugLogger.SaveFile(filePath);
+#endif
                 image.Save(fileName, ImageFormat.Jpeg);
                 return true;
             }

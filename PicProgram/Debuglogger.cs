@@ -11,6 +11,7 @@ namespace PicProgram
     static class DebugLogger
     {
         private static string s = string.Empty;
+        private static DateTime dt = new DateTime(2015, 1, 1, 0, 0, 0, 0);
         public static bool LogLine(string c)
         {
             s += "\r\n";
@@ -80,9 +81,14 @@ namespace PicProgram
             }
         }
 
+        public static bool ResetTime()
+        {
+            dt = DateTime.UtcNow;
+            return true;
+        }
         public static string GetTimeStamp()
         {
-            TimeSpan ts = DateTime.UtcNow - new DateTime(2015, 1, 1, 0, 0, 0, 0);
+            TimeSpan ts = DateTime.UtcNow - dt;
             return Convert.ToInt64(ts.TotalMilliseconds).ToString();
         } 
     }
