@@ -28,6 +28,8 @@ namespace PicProgram
         //The new base point will be set at the furthest possible edge of the picture.
         //The center of the rotate(also the base point of the original picture) will be at 
         //(diagonal,diagonal) at this coordinate system.
+
+        //For a faster speed, did not use Stretching function at last.
         private PointF ReachOriginRotate(Point now, double angle, int diagonal)
         {
             return ReachOrigin(now, 1, 1, angle, diagonal);
@@ -119,9 +121,14 @@ namespace PicProgram
                 {
                     for (int j = 0; j < anssize.Width; j++)
                     {
-                        PointF orip = ReachOriginStretching(new Point(j, i), strx, stry, diagonal);
+                        //PointF orip = ReachOriginStretching(new Point(j, i), strx, stry, diagonal);
+                        PointF orip = new PointF();
+                        orip.X = (float)(j / strx);
+                        orip.Y = (float)(i / stry);
                         int orixint = MathWork.floor(orip.X);
                         int oriyint = MathWork.floor(orip.Y);
+                        double u = orip.X - (double)MathWork.floor(orip.X);
+                        double v = orip.Y - (double)MathWork.floor(orip.Y);
                         switch (kind)
                         {
                             case Stretching.Nearest:
@@ -129,8 +136,6 @@ namespace PicProgram
                                 oupb.SetPixel(j, i, ExtraGetPixel(orixint, oriyint));
                                 break;
                             case Stretching.Bilinear:
-                                double u = orip.X - (double)MathWork.floor(orip.X);
-                                double v = orip.Y - (double)MathWork.floor(orip.Y);
 
                                 //This kind of Matrix calculating seens to be very slow.
                                 //Changing it into a faster type.
