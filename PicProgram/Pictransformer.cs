@@ -129,6 +129,7 @@ namespace PicProgram
                         int oriyint = MathWork.floor(orip.Y);
                         double u = orip.X - (double)MathWork.floor(orip.X);
                         double v = orip.Y - (double)MathWork.floor(orip.Y);
+                        int ansr, ansg, ansb;
                         switch (kind)
                         {
                             case Stretching.Nearest:
@@ -182,6 +183,7 @@ namespace PicProgram
 
                                 //int ansg = MathWork.upcolor(MathWork.round((1 - v) * (x_y.G + u * (x_1_y.G - x_y.G)) + v * (x_y_1.G + u * (x_1_y_1.G - x_y_1.G))));
                                 //int ansb = MathWork.upcolor(MathWork.round((1 - v) * (x_y.B + u * (x_1_y.B - x_y.B)) + v * (x_y_1.B + u * (x_1_y_1.B - x_y_1.B))));
+                                //output.SetPixel(j, i, Color.FromArgb(ansr, ansg, ansb));
                                 #endregion
 
                                 Color x_y = ExtraGetPixel(orixint, oriyint);
@@ -190,35 +192,63 @@ namespace PicProgram
                                 Color x_1_y_1 = ExtraGetPixel(orixint + 1, oriyint + 1);
                                 double temp;
                                 temp = x_y.R + u * (x_1_y.R - x_y.R);
-                                int ansr = MathWork.upcolor(MathWork.round(temp + v * (x_y_1.R + u * (x_1_y_1.R - x_y_1.R) - temp)));
+                                ansr = MathWork.upcolor(MathWork.round(temp + v * (x_y_1.R - temp + u * (x_1_y_1.R - x_y_1.R))));
                                 temp = x_y.G + u * (x_1_y.G - x_y.G);
-                                int ansg = MathWork.upcolor(MathWork.round(temp + v * (x_y_1.G + u * (x_1_y_1.G - x_y_1.G) - temp)));
+                                ansg = MathWork.upcolor(MathWork.round(temp + v * (x_y_1.G - temp + u * (x_1_y_1.G - x_y_1.G))));
                                 temp = x_y.B + u * (x_1_y.B - x_y.B);
-                                int ansb = MathWork.upcolor(MathWork.round(temp + v * (x_y_1.B + u * (x_1_y_1.B - x_y_1.B) - temp)));
-                                //output.SetPixel(j, i, Color.FromArgb(ansr, ansg, ansb));
+                                ansb = MathWork.upcolor(MathWork.round(temp + v * (x_y_1.B - temp + u * (x_1_y_1.B - x_y_1.B))));
                                 oupb.SetPixel(j, i, Color.FromArgb(ansr, ansg, ansb));
                                 break;
                             case Stretching.Bicubic:
-                                double u2 = orip.X - (double)MathWork.floor(orip.X);
-                                double v2 = orip.Y - (double)MathWork.floor(orip.Y);
-                                Matrix A = new Matrix(1, 4, new double[,] { { MathWork.KernelFunS(1 + u2), MathWork.KernelFunS(u2), MathWork.KernelFunS(1 - u2), MathWork.KernelFunS(2 - u2) } });
-                                Matrix Br = new Matrix(4, 4, new double[,]{{(double)ExtraGetPixel(orixint-1,oriyint-1).R,(double)ExtraGetPixel(orixint-1,oriyint-0).R,(double)ExtraGetPixel(orixint-1,oriyint+1).R,(double)ExtraGetPixel(orixint-1,oriyint+2).R},
-                                                                           {(double)ExtraGetPixel(orixint-0,oriyint-1).R,(double)ExtraGetPixel(orixint-0,oriyint-0).R,(double)ExtraGetPixel(orixint-0,oriyint+1).R,(double)ExtraGetPixel(orixint-0,oriyint+2).R},
-                                                                           {(double)ExtraGetPixel(orixint+1,oriyint-1).R,(double)ExtraGetPixel(orixint+1,oriyint-0).R,(double)ExtraGetPixel(orixint+1,oriyint+1).R,(double)ExtraGetPixel(orixint+1,oriyint+2).R},
-                                                                           {(double)ExtraGetPixel(orixint+2,oriyint-1).R,(double)ExtraGetPixel(orixint+2,oriyint-0).R,(double)ExtraGetPixel(orixint+2,oriyint+1).R,(double)ExtraGetPixel(orixint+2,oriyint+2).R}});
-                                Matrix Bg = new Matrix(4, 4, new double[,]{{(double)ExtraGetPixel(orixint-1,oriyint-1).G,(double)ExtraGetPixel(orixint-1,oriyint-0).G,(double)ExtraGetPixel(orixint-1,oriyint+1).G,(double)ExtraGetPixel(orixint-1,oriyint+2).G},
-                                                                           {(double)ExtraGetPixel(orixint-0,oriyint-1).G,(double)ExtraGetPixel(orixint-0,oriyint-0).G,(double)ExtraGetPixel(orixint-0,oriyint+1).G,(double)ExtraGetPixel(orixint-0,oriyint+2).G},
-                                                                           {(double)ExtraGetPixel(orixint+1,oriyint-1).G,(double)ExtraGetPixel(orixint+1,oriyint-0).G,(double)ExtraGetPixel(orixint+1,oriyint+1).G,(double)ExtraGetPixel(orixint+1,oriyint+2).G},
-                                                                           {(double)ExtraGetPixel(orixint+2,oriyint-1).G,(double)ExtraGetPixel(orixint+2,oriyint-0).G,(double)ExtraGetPixel(orixint+2,oriyint+1).G,(double)ExtraGetPixel(orixint+2,oriyint+2).G}});
-                                Matrix Bb = new Matrix(4, 4, new double[,]{{(double)ExtraGetPixel(orixint-1,oriyint-1).B,(double)ExtraGetPixel(orixint-1,oriyint-0).B,(double)ExtraGetPixel(orixint-1,oriyint+1).B,(double)ExtraGetPixel(orixint-1,oriyint+2).B},
-                                                                           {(double)ExtraGetPixel(orixint-0,oriyint-1).B,(double)ExtraGetPixel(orixint-0,oriyint-0).B,(double)ExtraGetPixel(orixint-0,oriyint+1).B,(double)ExtraGetPixel(orixint-0,oriyint+2).B},
-                                                                           {(double)ExtraGetPixel(orixint+1,oriyint-1).B,(double)ExtraGetPixel(orixint+1,oriyint-0).B,(double)ExtraGetPixel(orixint+1,oriyint+1).B,(double)ExtraGetPixel(orixint+1,oriyint+2).B},
-                                                                           {(double)ExtraGetPixel(orixint+2,oriyint-1).B,(double)ExtraGetPixel(orixint+2,oriyint-0).B,(double)ExtraGetPixel(orixint+2,oriyint+1).B,(double)ExtraGetPixel(orixint+2,oriyint+2).B}});
-                                Matrix C = new Matrix(4, 1, new double[,] { { MathWork.KernelFunS(1 + v2) }, { MathWork.KernelFunS(v2) }, { MathWork.KernelFunS(1 - v2) }, { MathWork.KernelFunS(2 - v2) } });
-                                int fansr = MathWork.upcolor(MathWork.round((A * Br * C).GetData(0, 0)));
-                                int fansg = MathWork.upcolor(MathWork.round((A * Bg * C).GetData(0, 0)));
-                                int fansb = MathWork.upcolor(MathWork.round((A * Bb * C).GetData(0, 0)));
-                                output.SetPixel(j, i, Color.FromArgb(fansr, fansg, fansb));
+                                //This kind of Matrix calculating seens to be very slow.
+                                //Changing it into a faster type.
+                                #region OldMethod
+                                //double u2 = orip.X - (double)MathWork.floor(orip.X);
+                                //double v2 = orip.Y - (double)MathWork.floor(orip.Y);
+                                //Matrix A = new Matrix(1, 4, new double[,] { { MathWork.KernelFunS(1 + u2), MathWork.KernelFunS(u2), MathWork.KernelFunS(1 - u2), MathWork.KernelFunS(2 - u2) } });
+                                //Matrix Br = new Matrix(4, 4, new double[,]{{(double)ExtraGetPixel(orixint-1,oriyint-1).R,(double)ExtraGetPixel(orixint-1,oriyint-0).R,(double)ExtraGetPixel(orixint-1,oriyint+1).R,(double)ExtraGetPixel(orixint-1,oriyint+2).R},
+                                //                                           {(double)ExtraGetPixel(orixint-0,oriyint-1).R,(double)ExtraGetPixel(orixint-0,oriyint-0).R,(double)ExtraGetPixel(orixint-0,oriyint+1).R,(double)ExtraGetPixel(orixint-0,oriyint+2).R},
+                                //                                           {(double)ExtraGetPixel(orixint+1,oriyint-1).R,(double)ExtraGetPixel(orixint+1,oriyint-0).R,(double)ExtraGetPixel(orixint+1,oriyint+1).R,(double)ExtraGetPixel(orixint+1,oriyint+2).R},
+                                //                                           {(double)ExtraGetPixel(orixint+2,oriyint-1).R,(double)ExtraGetPixel(orixint+2,oriyint-0).R,(double)ExtraGetPixel(orixint+2,oriyint+1).R,(double)ExtraGetPixel(orixint+2,oriyint+2).R}});
+                                //Matrix Bg = new Matrix(4, 4, new double[,]{{(double)ExtraGetPixel(orixint-1,oriyint-1).G,(double)ExtraGetPixel(orixint-1,oriyint-0).G,(double)ExtraGetPixel(orixint-1,oriyint+1).G,(double)ExtraGetPixel(orixint-1,oriyint+2).G},
+                                //                                           {(double)ExtraGetPixel(orixint-0,oriyint-1).G,(double)ExtraGetPixel(orixint-0,oriyint-0).G,(double)ExtraGetPixel(orixint-0,oriyint+1).G,(double)ExtraGetPixel(orixint-0,oriyint+2).G},
+                                //                                           {(double)ExtraGetPixel(orixint+1,oriyint-1).G,(double)ExtraGetPixel(orixint+1,oriyint-0).G,(double)ExtraGetPixel(orixint+1,oriyint+1).G,(double)ExtraGetPixel(orixint+1,oriyint+2).G},
+                                //                                           {(double)ExtraGetPixel(orixint+2,oriyint-1).G,(double)ExtraGetPixel(orixint+2,oriyint-0).G,(double)ExtraGetPixel(orixint+2,oriyint+1).G,(double)ExtraGetPixel(orixint+2,oriyint+2).G}});
+                                //Matrix Bb = new Matrix(4, 4, new double[,]{{(double)ExtraGetPixel(orixint-1,oriyint-1).B,(double)ExtraGetPixel(orixint-1,oriyint-0).B,(double)ExtraGetPixel(orixint-1,oriyint+1).B,(double)ExtraGetPixel(orixint-1,oriyint+2).B},
+                                //                                           {(double)ExtraGetPixel(orixint-0,oriyint-1).B,(double)ExtraGetPixel(orixint-0,oriyint-0).B,(double)ExtraGetPixel(orixint-0,oriyint+1).B,(double)ExtraGetPixel(orixint-0,oriyint+2).B},
+                                //                                           {(double)ExtraGetPixel(orixint+1,oriyint-1).B,(double)ExtraGetPixel(orixint+1,oriyint-0).B,(double)ExtraGetPixel(orixint+1,oriyint+1).B,(double)ExtraGetPixel(orixint+1,oriyint+2).B},
+                                //                                           {(double)ExtraGetPixel(orixint+2,oriyint-1).B,(double)ExtraGetPixel(orixint+2,oriyint-0).B,(double)ExtraGetPixel(orixint+2,oriyint+1).B,(double)ExtraGetPixel(orixint+2,oriyint+2).B}});
+                                //Matrix C = new Matrix(4, 1, new double[,] { { MathWork.KernelFunS(1 + v2) }, { MathWork.KernelFunS(v2) }, { MathWork.KernelFunS(1 - v2) }, { MathWork.KernelFunS(2 - v2) } });
+                                //int fansr = MathWork.upcolor(MathWork.round((A * Br * C).GetData(0, 0)));
+                                //int fansg = MathWork.upcolor(MathWork.round((A * Bg * C).GetData(0, 0)));
+                                //int fansb = MathWork.upcolor(MathWork.round((A * Bb * C).GetData(0, 0)));
+                                //output.SetPixel(j, i, Color.FromArgb(fansr, fansg, fansb));
+                                #endregion
+
+                                double Sup1 = MathWork.KernelFunS(u + 1);
+                                double Sup0 = MathWork.KernelFunS(u + 0);
+                                double Sus1 = MathWork.KernelFunS(u - 1);
+                                double Sus2 = MathWork.KernelFunS(u - 2);
+                                double Svp1 = MathWork.KernelFunS(v + 1);
+                                double Svp0 = MathWork.KernelFunS(v + 0);
+                                double Svs1 = MathWork.KernelFunS(v - 1);
+                                double Svs2 = MathWork.KernelFunS(v - 2);
+                                double kk1r = Sup1 * ExtraGetPixel(orixint - 1, oriyint - 1).R + Sup0 * ExtraGetPixel(orixint - 0, oriyint - 1).R + Sus1 * ExtraGetPixel(orixint + 1, oriyint - 1).R + Sus2 * ExtraGetPixel(orixint + 2, oriyint - 1).R;
+                                double kk2r = Sup1 * ExtraGetPixel(orixint - 1, oriyint - 0).R + Sup0 * ExtraGetPixel(orixint - 0, oriyint - 0).R + Sus1 * ExtraGetPixel(orixint + 1, oriyint - 0).R + Sus2 * ExtraGetPixel(orixint + 2, oriyint - 0).R;
+                                double kk3r = Sup1 * ExtraGetPixel(orixint - 1, oriyint + 1).R + Sup0 * ExtraGetPixel(orixint - 0, oriyint + 1).R + Sus1 * ExtraGetPixel(orixint + 1, oriyint + 1).R + Sus2 * ExtraGetPixel(orixint + 2, oriyint + 1).R;
+                                double kk4r = Sup1 * ExtraGetPixel(orixint - 1, oriyint + 2).R + Sup0 * ExtraGetPixel(orixint - 0, oriyint + 2).R + Sus1 * ExtraGetPixel(orixint + 1, oriyint + 2).R + Sus2 * ExtraGetPixel(orixint + 2, oriyint + 2).R;
+                                double kk1g = Sup1 * ExtraGetPixel(orixint - 1, oriyint - 1).G + Sup0 * ExtraGetPixel(orixint - 0, oriyint - 1).G + Sus1 * ExtraGetPixel(orixint + 1, oriyint - 1).G + Sus2 * ExtraGetPixel(orixint + 2, oriyint - 1).G;
+                                double kk2g = Sup1 * ExtraGetPixel(orixint - 1, oriyint - 0).G + Sup0 * ExtraGetPixel(orixint - 0, oriyint - 0).G + Sus1 * ExtraGetPixel(orixint + 1, oriyint - 0).G + Sus2 * ExtraGetPixel(orixint + 2, oriyint - 0).G;
+                                double kk3g = Sup1 * ExtraGetPixel(orixint - 1, oriyint + 1).G + Sup0 * ExtraGetPixel(orixint - 0, oriyint + 1).G + Sus1 * ExtraGetPixel(orixint + 1, oriyint + 1).G + Sus2 * ExtraGetPixel(orixint + 2, oriyint + 1).G;
+                                double kk4g = Sup1 * ExtraGetPixel(orixint - 1, oriyint + 2).G + Sup0 * ExtraGetPixel(orixint - 0, oriyint + 2).G + Sus1 * ExtraGetPixel(orixint + 1, oriyint + 2).G + Sus2 * ExtraGetPixel(orixint + 2, oriyint + 2).G;
+                                double kk1b = Sup1 * ExtraGetPixel(orixint - 1, oriyint - 1).B + Sup0 * ExtraGetPixel(orixint - 0, oriyint - 1).B + Sus1 * ExtraGetPixel(orixint + 1, oriyint - 1).B + Sus2 * ExtraGetPixel(orixint + 2, oriyint - 1).B;
+                                double kk2b = Sup1 * ExtraGetPixel(orixint - 1, oriyint - 0).B + Sup0 * ExtraGetPixel(orixint - 0, oriyint - 0).B + Sus1 * ExtraGetPixel(orixint + 1, oriyint - 0).B + Sus2 * ExtraGetPixel(orixint + 2, oriyint - 0).B;
+                                double kk3b = Sup1 * ExtraGetPixel(orixint - 1, oriyint + 1).B + Sup0 * ExtraGetPixel(orixint - 0, oriyint + 1).B + Sus1 * ExtraGetPixel(orixint + 1, oriyint + 1).B + Sus2 * ExtraGetPixel(orixint + 2, oriyint + 1).B;
+                                double kk4b = Sup1 * ExtraGetPixel(orixint - 1, oriyint + 2).B + Sup0 * ExtraGetPixel(orixint - 0, oriyint + 2).B + Sus1 * ExtraGetPixel(orixint + 1, oriyint + 2).B + Sus2 * ExtraGetPixel(orixint + 2, oriyint + 2).B;
+                                ansr = MathWork.upcolor(MathWork.round(Svp1 * kk1r + Svp0 * kk2r + Svs1 * kk3r + Svs2 * kk4r));
+                                ansg = MathWork.upcolor(MathWork.round(Svp1 * kk1g + Svp0 * kk2g + Svs1 * kk3g + Svs2 * kk4g));
+                                ansb = MathWork.upcolor(MathWork.round(Svp1 * kk1b + Svp0 * kk2b + Svs1 * kk3b + Svs2 * kk4b));
+                                oupb.SetPixel(j,i,Color.FromArgb(ansr,ansg,ansb));
                                 break;
                         }
                     }
