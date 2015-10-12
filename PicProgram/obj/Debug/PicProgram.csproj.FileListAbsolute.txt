@@ -1,0 +1,9 @@
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\bin\Debug\PicProgram.exe.config
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\bin\Debug\PicProgram.exe
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\bin\Debug\PicProgram.pdb
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Debug\PicProgram.Properties.Resources.resources
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Debug\PicProgram.csproj.GenerateResource.Cache
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Debug\PicProgram.exe
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Debug\PicProgram.pdb
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Debug\PicProgram.csprojResolveAssemblyReference.cache
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Debug\PicProgram.Mainform.resources
