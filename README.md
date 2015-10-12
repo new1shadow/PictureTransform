@@ -7,5 +7,7 @@ Using VS2013 pro for coding.
 
 (my first readme =.=)
 
+Thank you for reading.
+
 Author:ShadowK.
 
