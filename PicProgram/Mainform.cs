@@ -39,8 +39,10 @@ namespace PicProgram
             pictran.stretchpicture(2, 2, Pictransformer.Stretching.Bilinear,out ansimage);
             //DebugLogger.LogTimeStamp();
             //DebugLogger.LogLine("TEST");
+            //pictran.stop();
             DebugLogger.LogTimeStamp();
             JPGEncoder.SaveFile(ansimage);
+            pictran.stop();
             Close();
         }
     }

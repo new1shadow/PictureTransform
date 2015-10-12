@@ -1,4 +1,11 @@
-﻿using System;
+﻿//DebugLogger
+//Log anything you need for debug.
+//Author:ShadowK
+//email:zhu.shadowk@gmail.com
+//2015.10.12
+//Use Ctrl+M,Ctrl+O to fold the code.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

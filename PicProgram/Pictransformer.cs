@@ -21,6 +21,8 @@ namespace PicProgram
         private readonly PointF BlackPoint = new PointF(-1, -1);
         private Bitmap origin;
         private Bitmap output;
+        private PointBitmap orpb;
+        private PointBitmap oupb;
 
         //Return BlackPoint when out of origin range.
         //The new base point will be set at the furthest possible edge of the picture.
@@ -86,7 +88,7 @@ namespace PicProgram
         {
             if (x < 0 || x >= origin.Width || y < 0 || y >= origin.Height)
                 return Color.Black;
-            return origin.GetPixel(x, y);
+            return orpb.GetPixel(x, y);
         }
     }
 
@@ -97,10 +99,12 @@ namespace PicProgram
         public bool start(Bitmap image)
         {
             origin = new Bitmap(image);
+            orpb = new PointBitmap(origin);
+            orpb.LockBits();
             //Bigmapwidth = MathWork.round(2 * MathWork.sqrt(MathWork.power(origin.Width, 2) + MathWork.power(origin.Height, 2)));
             return true;
         }
-        public bool stretchpicture(double strx, double stry,Stretching kind, out Bitmap ans)
+        public bool stretchpicture(double strx, double stry, Stretching kind, out Bitmap ans)
         {
             try
             {
@@ -109,7 +113,10 @@ namespace PicProgram
                 if (output != null)
                     output.Dispose();
                 output = new Bitmap(anssize.Width, anssize.Height);
-                for(int i = 0;i < anssize.Height;i ++)
+                oupb = new PointBitmap(output);
+                oupb.LockBits();
+                for (int i = 0; i < anssize.Height; i++)
+                {
                     for (int j = 0; j < anssize.Width; j++)
                     {
                         PointF orip = ReachOriginStretching(new Point(j, i), strx, stry, diagonal);
@@ -118,7 +125,8 @@ namespace PicProgram
                         switch (kind)
                         {
                             case Stretching.Nearest:
-                                output.SetPixel(j, i, ExtraGetPixel(orixint, oriyint));
+                                //output.SetPixel(j, i, ExtraGetPixel(orixint, oriyint));
+                                oupb.SetPixel(j, i, ExtraGetPixel(orixint, oriyint));
                                 break;
                             case Stretching.Bilinear:
                                 double u = orip.X - (double)MathWork.floor(orip.X);
@@ -167,6 +175,8 @@ namespace PicProgram
                                 //    (1-v)*(    (1-u)*ExtraGetPixel(orixint, oriyint).B+    u*ExtraGetPixel(orixint + 1, oriyint).B)+
                                 //        v*((1-u)*ExtraGetPixel(orixint, oriyint + 1).B+u*ExtraGetPixel(orixint + 1, oriyint + 1).B)));
 
+                                //int ansg = MathWork.upcolor(MathWork.round((1 - v) * (x_y.G + u * (x_1_y.G - x_y.G)) + v * (x_y_1.G + u * (x_1_y_1.G - x_y_1.G))));
+                                //int ansb = MathWork.upcolor(MathWork.round((1 - v) * (x_y.B + u * (x_1_y.B - x_y.B)) + v * (x_y_1.B + u * (x_1_y_1.B - x_y_1.B))));
                                 #endregion
 
                                 Color x_y = ExtraGetPixel(orixint, oriyint);
@@ -180,13 +190,8 @@ namespace PicProgram
                                 int ansg = MathWork.upcolor(MathWork.round(temp + v * (x_y_1.G + u * (x_1_y_1.G - x_y_1.G) - temp)));
                                 temp = x_y.B + u * (x_1_y.B - x_y.B);
                                 int ansb = MathWork.upcolor(MathWork.round(temp + v * (x_y_1.B + u * (x_1_y_1.B - x_y_1.B) - temp)));
-                                //int ansg = MathWork.upcolor(MathWork.round((1 - v) * (x_y.G + u * (x_1_y.G - x_y.G)) + v * (x_y_1.G + u * (x_1_y_1.G - x_y_1.G))));
-                                //int ansb = MathWork.upcolor(MathWork.round((1 - v) * (x_y.B + u * (x_1_y.B - x_y.B)) + v * (x_y_1.B + u * (x_1_y_1.B - x_y_1.B))));
-#if DEBUG
-                                if (j == 0 && i % 5 == 0)
-                                    DebugLogger.LogLine("Processing:"+"x:"+j+"y:"+i+"Timestamp:"+DebugLogger.GetTimeStamp());
-#endif
-                                output.SetPixel(j, i, Color.FromArgb(ansr, ansg, ansb));
+                                //output.SetPixel(j, i, Color.FromArgb(ansr, ansg, ansb));
+                                oupb.SetPixel(j, i, Color.FromArgb(ansr, ansg, ansb));
                                 break;
                             case Stretching.Bicubic:
                                 double u2 = orip.X - (double)MathWork.floor(orip.X);
@@ -212,8 +217,15 @@ namespace PicProgram
                                 break;
                         }
                     }
+#if DEBUG
+                    if (i % 5 == 0)
+                        DebugLogger.LogLine("Processing:" + "x:0" + "y:" + i + "Timestamp:" + DebugLogger.GetTimeStamp());
+#endif
+                }
+                oupb.UnlockBits();
                 ans = output;
                 return true;
+
             }
             catch (Exception e)
             {
@@ -224,6 +236,7 @@ namespace PicProgram
 
         public void stop()
         {
+            orpb.UnlockBits();
             origin.Dispose();
             output.Dispose();
         }
