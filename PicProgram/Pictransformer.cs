@@ -252,10 +252,10 @@ namespace PicProgram
                                 break;
                         }
                     }
-#if DEBUG
-                    if (i % 5 == 0)
-                        DebugLogger.LogLine("Processing:" + "x:0" + "y:" + i + "Timestamp:" + DebugLogger.GetTimeStamp());
-#endif
+                    //For Debug
+                    //if (i % 5 == 0)
+                    //    DebugLogger.LogLine("Processing:" + "x:0" + "y:" + i + "Timestamp:" + DebugLogger.GetTimeStamp());
+
                 }
                 oupb.UnlockBits();
                 ans = output;

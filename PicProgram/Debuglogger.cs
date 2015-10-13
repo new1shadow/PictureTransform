@@ -56,6 +56,7 @@ namespace PicProgram
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string fileName = saveFileDialog.FileName;
+                    if (File.Exists(fileName)) File.Delete(fileName);
                     FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate);
                     StreamWriter sw = new StreamWriter(fs);
                     sw.Write(s);

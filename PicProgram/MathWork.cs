@@ -183,15 +183,18 @@ namespace PicProgram
         public enum Addition { Add, Sub };
         
         //return 1 when b <= 0.
+        //Using Math as calculating class.
         public static int power(int a, int b)
         {
             if (b <= 0) return 1;
-            return a * power(a, b - 1);
+            //return a * power(a, b - 1);
+            return (int)Math.Pow(a,b);
         }
         public static double power(double a, int b)
         {
             if (b <= 0) return 1;
-            return a * power(a, b - 1);
+            //return a * power(a, b - 1);
+            return Math.Pow(a, b);
         }
 
         public static int abs(int a)
@@ -221,8 +224,10 @@ namespace PicProgram
 
         public static bool rotate(double rx, double ry, double x0, double y0, double angle, ref double x, ref double y)
         {
-            x = (x0 - rx) * cos(angle) - (y0 - ry) * sin(angle) + rx;
-            y = (y0 - ry) * sin(angle) + (y0 - ry) * cos(angle) + ry;
+            double sina = sin(angle);
+            double cosa = cos(angle);
+            x = (x0 - rx) * cosa - (y0 - ry) * sina + rx;
+            y = (y0 - ry) * sina + (y0 - ry) * cosa + ry;
             return true;
         }
 
