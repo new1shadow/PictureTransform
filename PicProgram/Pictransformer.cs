@@ -126,7 +126,8 @@ namespace PicProgram
                 output = new Bitmap(anssize.Width, anssize.Height);
                 oupb = new PointBitmap(output);
                 oupb.LockBits();
-                PointF orip = new PointF();
+                //PointF orip = new PointF();
+                double oripx, oripy;
                 int orixint;
                 int oriyint;
                 double u,v,temp;
@@ -178,15 +179,15 @@ namespace PicProgram
                 #endregion
                 for (int i = 0; i < anssize.Height; i++)
                 {
-                    orip.Y = (float)(i / stry);
-                    oriyint = MathWork.floor(orip.Y);
-                    v = orip.Y - (double)MathWork.floor(orip.Y);
+                    oripy = (i / stry);
+                    oriyint = MathWork.floor(oripy);
+                    v = oripy - oriyint;
                     for (int j = 0; j < anssize.Width; j++)
                     {
                         //PointF orip = ReachOriginStretching(new Point(j, i), strx, stry, diagonal);
-                        orip.X = (float)(j / strx);
-                        orixint = MathWork.floor(orip.X);
-                        u = orip.X - (double)MathWork.floor(orip.X);
+                        oripx = (j / strx);
+                        orixint = MathWork.floor(oripx);
+                        u = oripx - orixint;
                         switch (kind)
                         {
                             case Stretching.Nearest:
@@ -357,7 +358,7 @@ namespace PicProgram
                         oldxint = orixint;
                     }
                     oldyint = oriyint;
-#if DEBUG
+#if MYDEBUG
                     DebugLogger.LogTimeStamp();
 #endif
                 }
