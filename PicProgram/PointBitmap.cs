@@ -112,6 +112,37 @@ namespace PicProgram
             }
         }
 
+        public void GetPixelRef(int x, int y, ref Color c)
+        {
+            unsafe
+            {
+                byte* ptr = (byte*)Iptr;
+                ptr = ptr + bitmapData.Stride * y;
+                ptr += Depth * x / 8;
+                c = Color.Empty;
+                if (Depth == 32)
+                {
+                    int a = ptr[3];
+                    int r = ptr[2];
+                    int g = ptr[1];
+                    int b = ptr[0];
+                    c = Color.FromArgb(a, r, g, b);
+                }
+                else if (Depth == 24)
+                {
+                    int r = ptr[2];
+                    int g = ptr[1];
+                    int b = ptr[0];
+                    c = Color.FromArgb(r, g, b);
+                }
+                else if (Depth == 8)
+                {
+                    int r = ptr[0];
+                    c = Color.FromArgb(r, r, r);
+                }
+            }
+        }
+        
         public void SetPixel(int x, int y, Color c)
         {
             unsafe

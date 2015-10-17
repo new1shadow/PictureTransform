@@ -1,0 +1,8 @@
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\bin\Release\PicProgram.exe.config
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Release\PicProgram.Mainform.resources
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Release\PicProgram.Properties.Resources.resources
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Release\PicProgram.csproj.GenerateResource.Cache
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\bin\Release\PicProgram.exe
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\bin\Release\PicProgram.pdb
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Release\PicProgram.exe
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Release\PicProgram.pdb

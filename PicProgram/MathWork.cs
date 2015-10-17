@@ -311,9 +311,9 @@ namespace PicProgram
         public static double KernelFunS(double x)
         {
             if (abs(x) <= 1)
-                return 1 - 2 * power(abs(x), 2) + power(abs(x), 3);
+                return 1 - 2 * x * x + abs(x) * x * x;
             else if (abs(x) < 2)
-                return 4 - 8 * abs(x) + 5 * power(abs(x), 2) - power(abs(x), 3);
+                return 4 - 8 * abs(x) + 5 * x * x - abs(x) * x * x;
             else
                 return 0;
         }

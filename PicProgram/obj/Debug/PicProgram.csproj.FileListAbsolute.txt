@@ -6,3 +6,4 @@ F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Debug\Pic
 F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Debug\PicProgram.exe
 F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Debug\PicProgram.pdb
 F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Debug\PicProgram.Mainform.resources
+F:\s数值分析与算法\第一次大作业\PicProgram\PicProgram\obj\Debug\PicProgram.csprojResolveAssemblyReference.cache
