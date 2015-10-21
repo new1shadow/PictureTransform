@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Drawing.Imaging;
 using System.Drawing;
 using System.Data;
+using System.Windows.Forms;
 
 namespace PicProgram
 {
@@ -21,11 +22,12 @@ namespace PicProgram
     {
         public enum Stretching { Nearest, Bilinear, Bicubic };
 
-        public bool start(Bitmap image)
+        public bool start(Bitmap image,ProgressBar pbs)
         {
             origin = new Bitmap(image);
             orpb = new PointBitmap(origin);
             orpb.LockBits();
+            pb = pbs;
             //Bigmapwidth = MathWork.round(2 * MathWork.sqrt(MathWork.power(origin.Width, 2) + MathWork.power(origin.Height, 2)));
             return true;
         }
@@ -39,6 +41,7 @@ namespace PicProgram
                 if (output != null)
                     output.Dispose();
                 output = new Bitmap(anssize.Width, anssize.Height);
+                pb.Maximum = anssize.Height;
                 oupb = new PointBitmap(output);
                 oupb.LockBits();
                 double oripx, oripy;
@@ -94,6 +97,7 @@ namespace PicProgram
                 #region ComputeEveryPixel
                 for (int i = 0; i < anssize.Height; i++)
                 {
+                    pb.PerformStep();
                     oripy = (i / stry);
                     oriyint = MathWork.floor(oripy);
                     v = oripy - oriyint;
@@ -281,6 +285,7 @@ namespace PicProgram
 
                 oupb.UnlockBits();
                 ans = output;
+                pb.Value = 0;
                 return true;
 
             }
@@ -338,6 +343,7 @@ namespace PicProgram
                 if (output != null)
                     output.Dispose();
                 output = new Bitmap(anssize.Width, anssize.Height);
+                pb.Maximum = anssize.Height;
                 oupb = new PointBitmap(output);
                 oupb.LockBits();
                 #region ComputeEveryPixel
@@ -392,6 +398,7 @@ namespace PicProgram
                 int i, j;
                 for (i = 0; i < anssize.Height; i++)
                 {
+                    pb.PerformStep();
                     for (j = 0; j < anssize.Width; j++)
                     {
                         Point now = new Point();
@@ -512,6 +519,7 @@ namespace PicProgram
                 #endregion
                 oupb.UnlockBits();
                 ans = output;
+                pb.Value = 0;
                 return true;
             }
             catch (Exception e)
@@ -523,9 +531,21 @@ namespace PicProgram
 
         public void stop()
         {
-            orpb.UnlockBits();
-            origin.Dispose();
-            output.Dispose();
+            if (origin != null)
+            {
+                orpb.UnlockBits();
+                origin.Dispose();
+            }
+            if(output != null)
+                output.Dispose();
+        }
+
+        public void stop2()
+        {
+            if (origin != null)
+            {
+                orpb.UnlockBits();
+            }
         }
     }
 
@@ -537,6 +557,7 @@ namespace PicProgram
         private Bitmap output;
         private PointBitmap orpb;
         private PointBitmap oupb;
+        private ProgressBar pb;
 
         //Return BlackPoint when out of origin range.
         //The new base point will be set at the furthest possible edge of the picture.
