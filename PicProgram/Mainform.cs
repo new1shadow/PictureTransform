@@ -74,7 +74,7 @@ namespace PicProgram
                 if (MathWork.max(input.Width, input.Height) > MAXWH)
                 {
                     double resized = (double)MAXWH / MathWork.max(input.Width, input.Height);
-                    MessageBox.Show("图像太大，将以" + MathWork.round(100 * resized).ToString() + "%的比例缩放图片。");
+                    MessageBox.Show("图像太大，将以" + MathWork.round(100 * resized).ToString() + "%的比例缩放显示图片。");
                     Bitmap bpt = new Bitmap(MAXWH, MAXWH);
                     Pictransformer ptmp = new Pictransformer();
                     ptmp.start(input, progressBar1);
@@ -136,7 +136,7 @@ namespace PicProgram
                 if (MathWork.max(output.Width, output.Height) > MAXWH)
                 {
                     double resized = (double)MAXWH / MathWork.max(output.Width, output.Height);
-                    MessageBox.Show("图像太大，将以" + MathWork.round(100 * resized).ToString() + "%的比例缩放图片。若想查看图片全貌，请保存图片。");
+                    MessageBox.Show("图像太大，将以" + MathWork.round(100 * resized).ToString() + "%的比例缩放显示图片。若想查看图片全貌，请保存图片。");
                     Bitmap bpt = new Bitmap(MAXWH, MAXWH);
                     Pictransformer ptmp = new Pictransformer();
                     ptmp.start(output, progressBar1);
