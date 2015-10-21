@@ -222,12 +222,13 @@ namespace PicProgram
             return a < b ? a : b;
         }
 
+        //calculate a location rotate
         public static bool rotate(double rx, double ry, double x0, double y0, double angle, ref double x, ref double y)
         {
             double sina = sin(angle);
             double cosa = cos(angle);
             x = (x0 - rx) * cosa - (y0 - ry) * sina + rx;
-            y = (y0 - ry) * sina + (y0 - ry) * cosa + ry;
+            y = (x0 - rx) * sina + (y0 - ry) * cosa + ry;
             return true;
         }
 
@@ -316,6 +317,11 @@ namespace PicProgram
                 return 4 - 8 * abs(x) + 5 * x * x - abs(x) * x * x;
             else
                 return 0;
+        }
+
+        public static double pi()
+        {
+            return Math.PI;
         }
     }
 }

@@ -29,7 +29,8 @@ namespace PicProgram
             DebugLogger.LogTimeStamp();
             Pictransformer pictran = new Pictransformer();
             pictran.start(image);
-            pictran.stretchpicture(0.5, 0.5, Pictransformer.Stretching.Bicubic, out ansimage);
+            //pictran.stretchpicture(0.5, 0.5, Pictransformer.Stretching.Bicubic, out ansimage);
+            pictran.rotate_stretch(2, 2, Pictransformer.Stretching.Bicubic, 2.0, out ansimage);
             DebugLogger.LogTimeStamp();
             JPGEncoder.SaveFile(ansimage);
             pictran.stop();
