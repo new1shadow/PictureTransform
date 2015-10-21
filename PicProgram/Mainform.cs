@@ -108,7 +108,7 @@ namespace PicProgram
                 if (checkBox1.Checked)
                 {
                     if (radioButton1.Checked)
-                        angle = Double.Parse(textBox3.Text) * 180 / MathWork.pi();
+                        angle = Double.Parse(textBox3.Text) * MathWork.pi() / 180;
                     else
                         angle = Double.Parse(textBox3.Text);
                 }
