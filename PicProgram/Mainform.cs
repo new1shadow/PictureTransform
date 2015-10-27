@@ -60,6 +60,7 @@ namespace PicProgram
             radioButton1.Enabled = checkBox1.Checked;
             radioButton2.Enabled = checkBox1.Checked;
             textBox3.Enabled = checkBox1.Checked;
+            checkBox2.Enabled = checkBox1.Checked;
         }
 
         private void open_Click(object sender, EventArgs e)
@@ -129,6 +130,8 @@ namespace PicProgram
                         pictran.rotate_stretch(strx, stry, Pictransformer.Stretching.Bilinear, angle, out output);
                     else if ((string)comboBox1.SelectedItem == "双三次插值")
                         pictran.rotate_stretch(strx, stry, Pictransformer.Stretching.Bicubic, angle, out output);
+                    if (checkBox2.Checked)
+                        pictran.crop(out output);
                 }
                 save.Enabled = true;
 
@@ -159,6 +162,12 @@ namespace PicProgram
         private void save_Click(object sender, EventArgs e)
         {
             JPGEncoder.SaveFile(output);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            pictran.crop(out output);
+            pictureBox1.Image = output;
         }
     }
 }

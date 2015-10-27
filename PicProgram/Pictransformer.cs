@@ -34,6 +34,8 @@ namespace PicProgram
 
         public bool stretchpicture(double strx, double stry, Stretching kind, out Bitmap ans)
         {
+            laststrx = strx;
+            laststry = stry;
             try
             {
                 int diagonal = CalculateDiagonal(origin.Size, strx, stry);
@@ -310,6 +312,8 @@ namespace PicProgram
             }
             try
             {
+                laststrx = strx;
+                laststry = stry;
                 int diagonal = CalculateDiagonal(origin.Size, strx, stry);
                 Size anssize = CalculateSize(origin.Size, strx, stry, angle, diagonal);
                 int rkind = 0;
@@ -529,6 +533,30 @@ namespace PicProgram
             }
         }
 
+        public bool crop(out Bitmap ans)
+        {
+            if (output == null)
+            {
+                ans = null;
+                return false;
+            }
+            else
+            {
+                Bitmap b = new Bitmap(MathWork.round(laststrx * origin.Width), MathWork.round(laststry * origin.Height));
+                Graphics g = Graphics.FromImage(b);
+                int startx = MathWork.round((output.Width - b.Width)/2);
+                int starty = MathWork.round((output.Height - b.Height) / 2);
+                g.FillRectangle(new SolidBrush(Color.Black), new Rectangle(0, 0, b.Width, b.Height));
+                g.DrawImage(output, new Rectangle(0, 0, b.Width, b.Height), new Rectangle(startx, starty, b.Width, b.Height), GraphicsUnit.Pixel);
+                output.Dispose();
+                output = (Bitmap)b.Clone();
+                g.Dispose();
+                b.Dispose();
+                ans = output;
+                return true;
+            }
+        }
+
         public void stop()
         {
             if (origin != null)
@@ -558,6 +586,8 @@ namespace PicProgram
         private PointBitmap orpb;
         private PointBitmap oupb;
         private ProgressBar pb;
+        private double laststrx = 1;
+        private double laststry = 1;
 
         //Return BlackPoint when out of origin range.
         //The new base point will be set at the furthest possible edge of the picture.
