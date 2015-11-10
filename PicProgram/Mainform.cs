@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
+//use Ctrl+M,Ctrl+O to fold the code.
 
 namespace PicProgram
 {
@@ -37,22 +37,6 @@ namespace PicProgram
             Background = Graphics.FromImage(White);
             Background.FillRectangle(new SolidBrush(Color.White), 0, 0, MAXWH, MAXWH);
             pictureBox1.BackgroundImage = White;
-
-            //Bitmap image;
-            //Bitmap ansimage;
-            //while (!JPGEncoder.OpenFile(out image)) if (image != null) image.Dispose();
-            //DebugLogger.ResetTime();
-            //DebugLogger.LogTimeStamp();
-            //Pictransformer pictran = new Pictransformer();
-            //pictran.start(image);
-            ////pictran.stretchpicture(0.5, 0.5, Pictransformer.Stretching.Bicubic, out ansimage);
-            //pictran.rotate_stretch(2, 2, Pictransformer.Stretching.Bicubic, 2.0, out ansimage);
-            //DebugLogger.LogTimeStamp();
-            //JPGEncoder.SaveFile(ansimage);
-            //pictran.stop();
-            //DebugLogger.ResetTime();
-            //DebugLogger.SaveFile();
-            //Close();
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

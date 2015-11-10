@@ -1,4 +1,5 @@
-﻿//DebugLogger
+﻿#if DEBUG
+//DebugLogger
 //Log anything you need for debug.
 //Author:ShadowK
 //email:zhu.shadowk@gmail.com
@@ -101,3 +102,4 @@ namespace PicProgram
         } 
     }
 }
+#endif

@@ -22,7 +22,8 @@ namespace PicProgram
     {
         public enum Stretching { Nearest, Bilinear, Bicubic };
 
-        public bool start(Bitmap image,ProgressBar pbs)
+        //Initialize
+        public bool start(Bitmap image, ProgressBar pbs)
         {
             origin = new Bitmap(image);
             orpb = new PointBitmap(origin);
@@ -305,7 +306,7 @@ namespace PicProgram
 
         public bool rotate_stretch(double strx, double stry, Stretching kind, double angle, out Bitmap ans)
         {
-            if(angle > MathWork.pi() * 2)
+            if (angle > MathWork.pi() * 2)
             {
                 ans = null;
                 return false;
@@ -318,20 +319,20 @@ namespace PicProgram
                 Size anssize = CalculateSize(origin.Size, strx, stry, angle, diagonal);
                 int rkind = 0;
                 int basement = 0;
-                double xend = 0,yend = 0;
-                if(angle < MathWork.pi()/2)
+                double xend = 0, yend = 0;
+                if (angle < MathWork.pi() / 2)
                 {
                     rkind = 1;
                     MathWork.rotate(diagonal, diagonal, diagonal, diagonal + origin.Height * stry, angle, ref xend, ref yend);
                     basement = MathWork.round(xend);
                 }
-                else if(angle < MathWork.pi()) 
+                else if (angle < MathWork.pi())
                 {
                     rkind = 2;
                     MathWork.rotate(diagonal, diagonal, diagonal, diagonal + origin.Height * stry, angle, ref xend, ref yend);
                     basement = MathWork.round(yend);
                 }
-                else if(angle < MathWork.pi()*3/2)
+                else if (angle < MathWork.pi() * 3 / 2)
                 {
                     rkind = 3;
                     MathWork.rotate(diagonal, diagonal, diagonal + origin.Width * strx, diagonal, angle, ref xend, ref yend);
@@ -406,19 +407,19 @@ namespace PicProgram
                     for (j = 0; j < anssize.Width; j++)
                     {
                         Point now = new Point();
-                        if(rkind == 1)
+                        if (rkind == 1)
                         {
                             now.X = basement + j;
                             now.Y = anssize.Height - i + diagonal;
                             //now.Y = diagonal + i;
                         }
-                        else if(rkind == 2)
+                        else if (rkind == 2)
                         {
                             now.X = j + diagonal - anssize.Width;
                             now.Y = basement + anssize.Height - i;
                             //now.Y = basement + i;
                         }
-                        else if(rkind == 3)
+                        else if (rkind == 3)
                         {
                             now.X = basement + j;
                             now.Y = diagonal - i;
@@ -533,6 +534,7 @@ namespace PicProgram
             }
         }
 
+        //Only after the rotate has been done,will cut the image.
         public bool crop(out Bitmap ans)
         {
             if (output == null)
@@ -544,7 +546,7 @@ namespace PicProgram
             {
                 Bitmap b = new Bitmap(MathWork.round(laststrx * origin.Width), MathWork.round(laststry * origin.Height));
                 Graphics g = Graphics.FromImage(b);
-                int startx = MathWork.round((output.Width - b.Width)/2);
+                int startx = MathWork.round((output.Width - b.Width) / 2);
                 int starty = MathWork.round((output.Height - b.Height) / 2);
                 g.FillRectangle(new SolidBrush(Color.Black), new Rectangle(0, 0, b.Width, b.Height));
                 g.DrawImage(output, new Rectangle(0, 0, b.Width, b.Height), new Rectangle(startx, starty, b.Width, b.Height), GraphicsUnit.Pixel);
@@ -557,6 +559,7 @@ namespace PicProgram
             }
         }
 
+        //Will release the input image and output image.
         public void stop()
         {
             if (origin != null)
@@ -564,10 +567,11 @@ namespace PicProgram
                 orpb.UnlockBits();
                 origin.Dispose();
             }
-            if(output != null)
+            if (output != null)
                 output.Dispose();
         }
 
+        //Will not release the input image and output image.
         public void stop2()
         {
             if (origin != null)
@@ -594,6 +598,8 @@ namespace PicProgram
         //The center of the rotate(also the base point of the original picture) will be at 
         //(diagonal,diagonal) at this coordinate system.
 
+        //Return the original point in the original image by using the point now given.
+
         //For a faster speed, did not use Stretching function at last.
         private PointF ReachOriginRotate(Point now, double angle, int diagonal)
         {
@@ -605,7 +611,7 @@ namespace PicProgram
         }
         private PointF ReachOrigin(Point now, double strx, double stry, double angle, int diagonal)
         {
-            double xrotate = 0,yrotate = 0;
+            double xrotate = 0, yrotate = 0;
             if (MathWork.abs(angle) > 0.000001D)
                 MathWork.rotate(diagonal, diagonal, (double)now.X, (double)now.Y, (-1) * angle, ref xrotate, ref yrotate);
             else
@@ -636,7 +642,7 @@ namespace PicProgram
         }
         private Size CalculateSize(Size now, double strx, double stry, double angle, int diagonal)
         {
-            double x0 = diagonal,y0 = diagonal,x1 = 0,y1 = 0,x2 = 0,y2 = 0,x3 = 0,y3 = 0;
+            double x0 = diagonal, y0 = diagonal, x1 = 0, y1 = 0, x2 = 0, y2 = 0, x3 = 0, y3 = 0;
             MathWork.rotate(diagonal, diagonal, diagonal + now.Width * strx, diagonal, angle, ref x1, ref y1);
             MathWork.rotate(diagonal, diagonal, diagonal + now.Width * strx, diagonal + now.Height * stry, angle, ref x2, ref y2);
             MathWork.rotate(diagonal, diagonal, diagonal, diagonal + now.Height * stry, angle, ref x3, ref y3);
@@ -657,7 +663,7 @@ namespace PicProgram
                 return Color.Black;
             return orpb.GetPixel(x, y);
         }
-
+        //A little bit "faster" way.
         private void ExtraGetPixelRef(int x, int y, ref Color c)
         {
             if (x < 0 || x >= origin.Width || y < 0 || y >= origin.Height)
