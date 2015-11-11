@@ -308,6 +308,9 @@ namespace PicProgram
         {
             if (angle > MathWork.pi() * 2 || angle < 0)
             {
+                if (output != null)
+                    output.Dispose();
+                output = null;
                 ans = null;
                 return false;
             }
