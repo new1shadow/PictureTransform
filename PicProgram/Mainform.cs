@@ -117,8 +117,8 @@ namespace PicProgram
                     if (checkBox2.Checked)
                         pictran.crop(out output);
                 }
-                save.Enabled = true;
-
+                if (output == null)
+                    throw new Exception();
                 pictureBox1.Image = White;
                 if (MathWork.max(output.Width, output.Height) > MAXWH)
                 {
@@ -135,10 +135,12 @@ namespace PicProgram
                 {
                     pictureBox1.Image = output;
                 }
+                save.Enabled = true;
             }
             catch (Exception es)
             {
-                MessageBox.Show("参数错误！（角度请小于360°）");
+                MessageBox.Show("参数错误！（角度请小于360°，大于0°）");
+                save.Enabled = false;
                 return;
             }
         }

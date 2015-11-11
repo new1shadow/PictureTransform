@@ -306,7 +306,7 @@ namespace PicProgram
 
         public bool rotate_stretch(double strx, double stry, Stretching kind, double angle, out Bitmap ans)
         {
-            if (angle > MathWork.pi() * 2)
+            if (angle > MathWork.pi() * 2 || angle < 0)
             {
                 ans = null;
                 return false;
